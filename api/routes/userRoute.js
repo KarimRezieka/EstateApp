@@ -1,8 +1,20 @@
-import express from 'express'
+import express from "express";
+import {
+  createUser,
+  deleteUser,
+  getSpecificUser,
+  getUsers,
+  updateUser,
+} from "../services/userService.js";
+import { verifyToken } from "../middleware/verfiyToken.js";
 
+const router = express.Router();
 
-const router = express.Router()
+router.route("/").get(verifyToken, getUsers).post(verifyToken, createUser);
+router
+  .route("/:id")
+  .get(verifyToken, getSpecificUser)
+  .put(verifyToken, updateUser)
+  .delete(verifyToken, deleteUser);
 
-router.route.get('/users').post()
-
-export default router ;
+export default router;
