@@ -3,12 +3,15 @@ import "./profileUpdatePage.scss";
 import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import UploadWidget from "../../components/uploadWidget/UploadWidget";
 
 function ProfileUpdatePage() {
   const { updateUser, currentUser } = useContext(AuthContext);
   const [error, setError] = useState("");
+  const [avatar, setAvatar] = useState(currentUser.data.avatar);
+  console.log(avatar)
   const navigate = useNavigate();
-console.log(currentUser.data.id)
+  console.log(currentUser.data.id);
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -19,17 +22,16 @@ console.log(currentUser.data.id)
     try {
       const res = await axios.put(
         `http://localhost:8800/api/users/${currentUser.data.id}`,
-        { username, email, password },
+        { username, email, password,avatar },
         { withCredentials: true } // Include cookies in the request
       );
       updateUser(res.data);
-      navigate('/profile')
+      navigate("/profile");
       console.log(res.data);
     } catch (err) {
-      console.log(err)
+      console.log(err);
       setError(
-        err.response.message ||
-          "An error occurred. Please try again later."
+        err.response.message || "An error occurred. Please try again later."
       );
     }
   };
@@ -67,9 +69,19 @@ console.log(currentUser.data.id)
       </div>
       <div className="sideContainer">
         <img
-          src={currentUser.avatar || "/noavatar.svg"}
+          src={avatar || "/noavatar.svg"}
           alt=""
           className="avatar"
+        />
+        <UploadWidget
+          uwConfig={{
+            cloudName: "klearn",
+            uploadPreset: "estate",
+            multiple: false,
+            maxImageFileSize: 2000000,
+            folder: "avatars",
+          }}
+          setAvatar={setAvatar}
         />
       </div>
     </div>
