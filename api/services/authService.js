@@ -13,7 +13,7 @@ export const register = async (req, res) => {
         password: hasedPassword,
       },
     });
-    res.status(201).json({ message: "User created successfully" });
+    res.status(201).json({ data: "User created successfully" });
   } catch (err) {
     res.status(500).json({ message: "Failed to create user ! " });
   }
@@ -46,7 +46,7 @@ export const login = async (req, res) => {
     });
 
     // Respond with success
-    res.status(200).json({ message: userInfo });
+    res.status(200).json({ data: userInfo });
   } catch (err) {
     console.error("Login error:", err); 
     res.status(500).json({ message: "Failed to login!" });

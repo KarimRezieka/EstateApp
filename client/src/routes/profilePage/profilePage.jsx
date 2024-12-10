@@ -10,7 +10,7 @@ import { AuthContext } from "../../context/AuthContext";
 function ProfilePage() {
   const navigate = useNavigate();
   const { currentUser, updateUser } = useContext(AuthContext);
-  console.log(currentUser.message.username);
+  console.log(currentUser.data.username);
   const handleLogout = async () => {
     try {
       // Correctly await the axios call
@@ -44,13 +44,13 @@ function ProfilePage() {
           <div className="info">
             <span>
               Avatar:
-              <img src={currentUser.message.avatar || "noavatar.svg"} alt="" />
+              <img src={currentUser.data.avatar || "noavatar.svg"} alt="" />
             </span>
             <span>
-              Username: <b>{currentUser.message.username}</b>
+              Username: <b>{currentUser.data.username}</b>
             </span>
             <span>
-              E-mail: <b>{currentUser.message.email}</b>
+              E-mail: <b>{currentUser.data.email}</b>
             </span>
             <button onClick={handleLogout}>Logout</button>
           </div>
