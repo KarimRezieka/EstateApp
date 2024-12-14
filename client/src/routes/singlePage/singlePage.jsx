@@ -6,9 +6,10 @@ import { useLoaderData } from "react-router-dom";
 
 function SinglePage() {
   const post = useLoaderData();
+  const list = post.data
   console.log(post);
   console.log(post.data.user);
- console.log(post.images)
+  console.log(post.images);
   return (
     <div className="singlePage">
       <div className="details">
@@ -118,7 +119,7 @@ function SinglePage() {
           </div>
           <p className="title">Location</p>
           <div className="mapContainer">
-            <Map items={[post]} />
+            <Map items={[list]} />
           </div>
           <div className="buttons">
             <button>
