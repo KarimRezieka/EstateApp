@@ -8,8 +8,8 @@ import UploadWidget from "../../components/uploadWidget/UploadWidget";
 function ProfileUpdatePage() {
   const { updateUser, currentUser } = useContext(AuthContext);
   const [error, setError] = useState("");
-  const [avatar, setAvatar] = useState(currentUser.data.avatar);
-  console.log(avatar)
+  const [avatar, setAvatar] = useState([]);
+  console.log(avatar);
   const navigate = useNavigate();
   console.log(currentUser.data.id);
   const handleSubmit = async (e) => {
@@ -22,7 +22,7 @@ function ProfileUpdatePage() {
     try {
       const res = await axios.put(
         `http://localhost:8800/api/users/${currentUser.data.id}`,
-        { username, email, password,avatar },
+        { username, email, password, avatar: avatar[0] },
         { withCredentials: true } // Include cookies in the request
       );
       updateUser(res.data);
@@ -69,7 +69,7 @@ function ProfileUpdatePage() {
       </div>
       <div className="sideContainer">
         <img
-          src={avatar || "/noavatar.svg"}
+          src={avatar[0] || currentUser.avatar || "/noavatar.svg"}
           alt=""
           className="avatar"
         />
@@ -81,7 +81,7 @@ function ProfileUpdatePage() {
             maxImageFileSize: 2000000,
             folder: "avatars",
           }}
-          setAvatar={setAvatar}
+          setState={setAvatar}
         />
       </div>
     </div>

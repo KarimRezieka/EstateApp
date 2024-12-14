@@ -1,3 +1,31 @@
 node_modules
 # Keep environment variables out of version control
 .env
+{
+  "postData": {
+    "title": "Standalone House with Pool",
+    "price": 450000,
+    "images": [
+      "https://example.com/housepool1.jpg",
+      "https://example.com/housepool2.jpg"
+    ],
+    "address": "78 Palm Avenue",
+    "city": "Miami",
+    "bedroom": 5,
+    "bathroom": 4,
+    "latitude": "25.7617",
+    "longitude": "-80.1918",
+    "type": "buy",
+    "property": "standalone"
+  },
+  "postDetail": {
+    "desc": "A stunning house with a private pool and garden.",
+    "utilities": "Water, Electricity, Pool Maintenance",
+    "pet": "Allowed",
+    "income": "8000",
+    "size": 3000,
+    "school": 5,
+    "bus": 3,
+    "restaurant": 2
+  }
+}
