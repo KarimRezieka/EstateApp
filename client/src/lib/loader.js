@@ -7,7 +7,6 @@ export const singlePageLoader = async ({ request, params }) => {
   return res.data;
 };
 
-
 export const listPageLoader = async ({ request, params }) => {
   try {
     const query = request.url.includes("?") ? request.url.split("?")[1] : "";
@@ -33,5 +32,23 @@ export const listPageLoader = async ({ request, params }) => {
     return defer({
       postResponse: Promise.reject("Error loading posts!"),
     });
+  }
+};
+export const profilePageLoader = async () => {
+  try {
+    const postPromise = axios.get(
+      "http://localhost:8800/api/users/profilePosts",
+      {
+        withCredentials: true,
+      }
+    );
+
+    // Return deferred promises for lazy loading
+    return defer({
+      postResponse: postPromise,
+    });
+  } catch (err) {
+    console.error("Error loading profile data:", err.message);
+    throw new Error("Failed to load profile page data.");
   }
 };

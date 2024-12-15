@@ -78,10 +78,10 @@ export const deleteUser = async (req, res, next) => {
 };
 export const savePost = async (req, res, next) => {
   const postId = req.body.postId;
-  const tokenUserId = req.userId; 
+  const tokenUserId = req.userId;
 
   // Check if the authenticated user is allowed to modify the data
- 
+
   try {
     // Check if the post is already saved
     const existingSave = await prisma.SavedPost.findUnique({
@@ -117,5 +117,37 @@ export const savePost = async (req, res, next) => {
   } catch (err) {
     console.error("Error in savePost:", err);
     return res.status(500).json({ message: "Failed to save post" });
+  }
+};
+
+export const profilePost = async (req, res, next) => {
+  const tokenUserId = req.userId;
+
+  if (!tokenUserId) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+
+  try {
+    // Fetch user posts
+    const userPosts = await prisma.Post.findMany({
+      where: { userId: tokenUserId },
+    });
+
+    // Fetch saved posts
+    const saved = await prisma.SavedPost.findMany({
+      where: { userId: tokenUserId },
+      include: {
+        post: true,
+      },
+    });
+
+    // Extract only the posts
+    const savedPosts = saved.map((item) => item.post);
+
+    // Send response
+    res.status(200).json({ userPosts, savedPosts });
+  } catch (err) {
+    console.error("Error fetching profile posts:", err); // Log detailed error
+    res.status(500).json({ message: "Failed to get Profile Posts" });
   }
 };
