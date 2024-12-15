@@ -5,6 +5,7 @@ import {
   getSpecificUser,
   getUsers,
   updateUser,
+  savePost,
 } from "../services/userService.js";
 import { verifyToken } from "../middleware/verfiyToken.js";
 
@@ -16,5 +17,6 @@ router
   .get(verifyToken, getSpecificUser)
   .put(verifyToken, updateUser)
   .delete(verifyToken, deleteUser);
+router.post("/save", verifyToken, savePost);
 
 export default router;

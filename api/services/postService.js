@@ -20,6 +20,7 @@ export const getPosts = async (req, res, next) => {
     res.status(500).json({ message: err });
   }
 };
+
 export const getSpecificPost = async (req, res, next) => {
   const id = req.params.id;
   try {
@@ -35,7 +36,24 @@ export const getSpecificPost = async (req, res, next) => {
         },
       },
     });
-    res.status(200).json({ data: post });
+    const token = req.cookies?.token;
+
+    if (token) {
+      jwt.verify(token, process.env.JWT_SECRET_KEY, async (err, payload) => {
+        if (!err) {
+          const saved = await prisma.SavedPost.findUnique({
+            where: {
+              userId_postId: {
+                postId: id,
+                userId: payload.id,
+              },
+            },
+          });
+          res.status(200).json({ data:{...post, isSaved: saved ? true : false} });
+        }
+      });
+    }
+    res.status(200).json({data:{ ...post, isSaved: false }});
   } catch (err) {
     res.status(500).json({ message: err });
   }

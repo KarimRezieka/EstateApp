@@ -76,3 +76,46 @@ export const deleteUser = async (req, res, next) => {
     res.status(500).json({ message: "Faild to get users " });
   }
 };
+export const savePost = async (req, res, next) => {
+  const postId = req.body.postId;
+  const tokenUserId = req.userId; 
+
+  // Check if the authenticated user is allowed to modify the data
+ 
+  try {
+    // Check if the post is already saved
+    const existingSave = await prisma.SavedPost.findUnique({
+      where: {
+        userId_postId: {
+          userId: tokenUserId,
+          postId: postId,
+        },
+      },
+    });
+
+    if (existingSave) {
+      // If the post is already saved, delete it
+      await prisma.SavedPost.delete({
+        where: {
+          userId_postId: {
+            userId: tokenUserId,
+            postId: postId,
+          },
+        },
+      });
+      return res.status(200).json({ message: "Post removed from saved list" });
+    } else {
+      // If the post is not saved, create a new saved post entry
+      await prisma.SavedPost.create({
+        data: {
+          userId: tokenUserId,
+          postId: postId,
+        },
+      });
+      return res.status(200).json({ message: "Post saved" });
+    }
+  } catch (err) {
+    console.error("Error in savePost:", err);
+    return res.status(500).json({ message: "Failed to save post" });
+  }
+};
