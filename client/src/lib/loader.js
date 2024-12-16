@@ -42,10 +42,13 @@ export const profilePageLoader = async () => {
         withCredentials: true,
       }
     );
-
+    const chatPromise = axios.get("http://localhost:8800/api/chats", {
+      withCredentials: true,
+    });
     // Return deferred promises for lazy loading
     return defer({
       postResponse: postPromise,
+      chatResponse: chatPromise,
     });
   } catch (err) {
     console.error("Error loading profile data:", err.message);

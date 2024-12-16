@@ -6,7 +6,8 @@ import {
   getUsers,
   updateUser,
   savePost,
-  profilePost
+  profilePost,
+  getNotificationNumber
 } from "../services/userService.js";
 import { verifyToken } from "../middleware/verfiyToken.js";
 
@@ -20,5 +21,6 @@ router
   .delete(verifyToken, deleteUser);
 router.post("/save", verifyToken, savePost);
 router.get("/profilePosts",verifyToken,profilePost);
+router.get("/notifications",verifyToken,getNotificationNumber);
 
 export default router;
